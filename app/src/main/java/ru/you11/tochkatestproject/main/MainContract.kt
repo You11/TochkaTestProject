@@ -2,7 +2,7 @@ package ru.you11.tochkatestproject.main
 
 import ru.you11.tochkatestproject.BasePresenter
 import ru.you11.tochkatestproject.BaseView
-import ru.you11.tochkatestproject.model.Repository
+import ru.you11.tochkatestproject.model.GithubUser
 
 interface MainContract {
 
@@ -16,11 +16,11 @@ interface MainContract {
 
         fun setLoadingIndicator(active: Boolean)
 
-        fun showNoRepositoresScreen()
+        fun showNoGithubUsersScreen()
 
-        fun showRepositories(repositories: List<Repository>)
+        fun showGithubUsers(repositories: List<GithubUser>)
 
-        fun showLoadingRepositoriesError()
+        fun showLoadingGithubUsersError()
 
         fun removeRepositoriesFromUI()
 
@@ -29,7 +29,7 @@ interface MainContract {
 
     interface Presenter: BasePresenter {
 
-        fun loadRepositories()
+        fun loadGithubUsers()
 
         fun logOffUser()
 
