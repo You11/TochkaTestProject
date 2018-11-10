@@ -9,4 +9,6 @@
 
     <string name="nav_drawer_users_title">Search users</string>
     <string name="nav_drawer_about_me_title">About me</string>
+    <string name="menu_search_action">Search</string>
+    <string name="menu_search_hint">Github username</string>
 </resources>
