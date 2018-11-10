@@ -1,15 +1,11 @@
 package ru.you11.tochkatestproject.main
 
-import android.app.SearchManager
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -23,19 +19,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         setupNavigationDrawer()
-        setupInitialFragment(savedInstanceState)
+        setupInitialFragment()
     }
 
-    private fun setupInitialFragment(savedInstanceState: Bundle?) {
-        if (fragment_container != null) {
-            if (savedInstanceState != null) {
-                return
-            }
+    private fun setupInitialFragment() {
 
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, MainFragment(), "MainFragment")
-                .commit()
-        }
+        val fragment = SearchFragment()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment, "SearchFragment")
+            .commit()
+
+        SearchPresenter(fragment)
     }
 
     override fun onBackPressed() {
@@ -56,12 +50,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         when (item.itemId) {
             R.id.nav_drawer_users -> {
-                fragment = MainFragment()
-                fragmentTag = "MainFragment"
+                fragment = SearchFragment()
+                SearchPresenter(fragment)
+                fragmentTag = "SearchFragment"
             }
 
             R.id.nav_drawer_about_me -> {
                 fragment = AboutMeFragment()
+                AboutMePresenter(fragment)
                 fragmentTag = "AboutMeFragment"
             }
 

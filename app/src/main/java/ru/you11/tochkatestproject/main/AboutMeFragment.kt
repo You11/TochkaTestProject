@@ -12,7 +12,14 @@ import ru.you11.tochkatestproject.R
 
 class AboutMeFragment: Fragment() {
 
+    lateinit var presenter: AboutMePresenter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_about_me, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.start()
     }
 }
