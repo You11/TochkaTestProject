@@ -35,7 +35,7 @@ interface MainContract {
 
         interface Presenter: BasePresenter {
 
-            fun loadGithubUsers()
+            fun loadGithubUsers(query: String, page: Int)
         }
     }
 

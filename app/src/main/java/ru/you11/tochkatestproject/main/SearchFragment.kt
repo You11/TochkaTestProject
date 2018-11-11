@@ -2,6 +2,7 @@ package ru.you11.tochkatestproject.main
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import ru.you11.tochkatestproject.R
@@ -45,15 +46,13 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchGithubUsers(query)
+                if (query != null) {
+                    presenter.loadGithubUsers(query, 1)
+                }
                 searchView.clearFocus()
                 return true
             }
         }
-    }
-
-    private fun searchGithubUsers(query: String?) {
-        if (query == null) return
     }
 
     override fun setLoadingIndicator(active: Boolean) {
