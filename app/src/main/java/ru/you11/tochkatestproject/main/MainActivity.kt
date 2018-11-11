@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         findViewById<TextView>(R.id.nav_header_user_name).text = user.username
 
         val image = findViewById<ImageView>(R.id.nav_header_user_avatar)
-        Picasso.get().load(user.photoUrl).into(image)
+        Picasso.get().load(user.photoUrl).resize(200, 200).into(image)
     }
 
     override fun displayVKUserInfoErrorMessage(errorMessage: String) {

@@ -19,14 +19,21 @@ class DrawerPresenter(private val activity: MainActivity): MainContract.DrawerCo
     override fun getUserInfo() {
         if (AppUser.isLoggedIn()) {
             if (AppUser.getAuthMethod() == AuthMethod.VKontakte) {
-                VKApi.users().get().executeWithListener(object : VKRequest.VKRequestListener() {
+                val params = VKParameters()
+                params[VKApiConst.FIELDS] = "photo_200"
+                val vkRequest = VKRequest("users.get", params)
+                vkRequest.executeWithListener(object : VKRequest.VKRequestListener() {
                     override fun onComplete(response: VKResponse?) {
                         super.onComplete(response)
-                        val user = (response?.parsedModel as VKList<VKApiUser>)[0]
-                        val username = user.first_name + " " + user.last_name
-                        val userPhoto = user.photo_100
+                        val user = response?.json?.getJSONArray("response")?.getJSONObject(0)
+                        val firstName = user?.getString("first_name")
+                        val lastName = user?.getString("last_name")
+                        val photoUrl = user?.getString("photo_200")
 
-                        activity.displayUserInfo(AppUser(username, userPhoto))
+                        if (photoUrl != null)
+                            activity.displayUserInfo(AppUser("$firstName $lastName", photoUrl))
+                        else
+                            activity.displayUserInfo(AppUser("$firstName $lastName", photoUrl))
                     }
 
                     override fun onError(error: VKError?) {
