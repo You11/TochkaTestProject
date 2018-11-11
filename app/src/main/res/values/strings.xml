@@ -15,4 +15,5 @@
     <string name="search_rw_username">Username: %1$s</string>
     <string name="search_rw_user_id">Id: %1$d</string>
     <string name="search_rw_user_score">Score: %1$f</string>
+    <string name="search_screen_empty_message">Please input text in search bar above to find Github users.</string>
 </resources>

@@ -1,6 +1,5 @@
 package ru.you11.tochkatestproject.main
 
-import android.app.Application
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
@@ -12,6 +11,7 @@ import android.widget.RelativeLayout
 import android.widget.SearchView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
+import org.w3c.dom.Text
 import ru.you11.tochkatestproject.MainApp
 import ru.you11.tochkatestproject.R
 import ru.you11.tochkatestproject.model.GithubUser
@@ -22,6 +22,7 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
 
     private lateinit var searchBar: SearchView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var screenEmptyMessage: TextView
 
     private val results = ArrayList<GithubUser>()
 
@@ -31,6 +32,7 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
 
         val root = inflater.inflate(R.layout.fragment_search_users, container, false)
         with(root) {
+            screenEmptyMessage = findViewById(R.id.search_screen_empty_message)
             recyclerView = findViewById(R.id.search_results_recycler_view)
             setupRecyclerView()
         }
@@ -88,13 +90,16 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
     }
 
     override fun showNoGithubUsersScreen() {
-
+        recyclerView.visibility = RecyclerView.GONE
+        screenEmptyMessage.visibility = TextView.VISIBLE
     }
 
     override fun showGithubUsers(users: ArrayList<GithubUser>) {
         results.clear()
         results.addAll(users)
         recyclerView.adapter.notifyDataSetChanged()
+        screenEmptyMessage.visibility = TextView.GONE
+        recyclerView.visibility = RecyclerView.VISIBLE
     }
 
     override fun showLoadingGithubUsersError() {
