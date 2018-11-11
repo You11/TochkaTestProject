@@ -1,5 +1,6 @@
 package ru.you11.tochkatestproject.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -14,7 +15,9 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import ru.you11.tochkatestproject.R
+import ru.you11.tochkatestproject.login.LoginActivity
 import ru.you11.tochkatestproject.model.AppUser
+import ru.you11.tochkatestproject.model.AuthMethod
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainContract.DrawerContract.View {
 
@@ -26,9 +29,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         setupNavigationDrawer()
-        DrawerPresenter(this)
-        presenter.start()
         setupInitialFragment()
+        DrawerPresenter(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //crashes in onCreate because view not initialized by that time
+        presenter.start()
     }
 
     private fun setupInitialFragment() {
@@ -52,8 +60,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        val fragment: Fragment
-        val fragmentTag: String
+        val fragment: Fragment?
+        val fragmentTag: String?
 
         drawer_layout.closeDrawer(GravityCompat.START)
 
@@ -68,6 +76,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragment = AboutMeFragment()
                 AboutMePresenter(fragment)
                 fragmentTag = "AboutMeFragment"
+            }
+
+            R.id.nav_drawer_change_profile -> {
+                presenter.logOffUser()
+                return true
             }
 
             else -> {

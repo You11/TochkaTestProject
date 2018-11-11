@@ -13,6 +13,7 @@ import com.vk.sdk.VKCallback
 import com.vk.sdk.VKSdk
 import com.vk.sdk.api.VKError
 import ru.you11.tochkatestproject.R
+import ru.you11.tochkatestproject.model.AppUser
 
 
 class LoginFragment: Fragment(), LoginContract.View {

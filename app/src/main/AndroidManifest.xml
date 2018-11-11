@@ -20,8 +20,7 @@
         </activity>
 
         <activity android:name=".login.LoginActivity"
-                  android:label="Login"
-                  android:noHistory="true" >
+                  android:label="Login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

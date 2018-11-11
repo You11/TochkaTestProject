@@ -32,6 +32,7 @@ class LoginPresenter(private val loginFragment: LoginFragment): LoginContract.Pr
     override fun startActivity() {
         val intent = Intent(loginFragment.activity, MainActivity::class.java)
         loginFragment.startActivity(intent)
+        loginFragment.activity.finish()
     }
 
     override fun saveUserInfo() {

@@ -1,8 +1,12 @@
 package ru.you11.tochkatestproject.main
 
+import android.content.Intent
+import android.support.v4.content.ContextCompat.startActivity
+import com.vk.sdk.VKSdk
 import com.vk.sdk.api.*
 import com.vk.sdk.api.model.VKApiUser
 import com.vk.sdk.api.model.VKList
+import ru.you11.tochkatestproject.login.LoginActivity
 import ru.you11.tochkatestproject.model.AppUser
 import ru.you11.tochkatestproject.model.AuthMethod
 
@@ -33,7 +37,7 @@ class DrawerPresenter(private val activity: MainActivity): MainContract.DrawerCo
                         if (photoUrl != null)
                             activity.displayUserInfo(AppUser("$firstName $lastName", photoUrl))
                         else
-                            activity.displayUserInfo(AppUser("$firstName $lastName", photoUrl))
+                            activity.displayUserInfo(AppUser("$firstName $lastName"))
                     }
 
                     override fun onError(error: VKError?) {
@@ -48,6 +52,25 @@ class DrawerPresenter(private val activity: MainActivity): MainContract.DrawerCo
     }
 
     override fun logOffUser() {
+        when (AppUser.getAuthMethod()) {
+            AuthMethod.VKontakte -> {
+                VKSdk.logout()
+            }
 
+            AuthMethod.Google -> {
+
+            }
+
+            AuthMethod.Facebook -> {
+
+            }
+
+            else -> {
+
+            }
+        }
+
+        activity.startActivity(Intent(activity, LoginActivity::class.java))
+        activity.finish()
     }
 }
