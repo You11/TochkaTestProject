@@ -1,12 +1,15 @@
 package ru.you11.tochkatestproject.main
 
 import android.util.Log
+import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import ru.you11.tochkatestproject.model.GithubService
 import ru.you11.tochkatestproject.model.GithubUser
-import ru.you11.tochkatestproject.model.GithubUserList
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class SearchPresenter(private val searchView: SearchFragment): MainContract.SearchContract.Presenter {
 
@@ -14,15 +17,30 @@ class SearchPresenter(private val searchView: SearchFragment): MainContract.Sear
         searchView.presenter = this
     }
 
-    private var disposable = CompositeDisposable()
+    private val DELAY_TIME_MS: Long = 600
+
+    private var compDisposable = CompositeDisposable()
+    private lateinit var onInputDisposable: Disposable
 
     override fun start() {
         searchView.showNoGithubUsersScreen()
     }
 
+    override fun loadWithDelay(query: String) {
+        if (this::onInputDisposable.isInitialized)
+            onInputDisposable.dispose()
+
+        onInputDisposable = Completable.timer(DELAY_TIME_MS, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.d("loadedWithDelay", query)
+                loadGithubUsers(query, 1)
+            }
+        compDisposable.add(onInputDisposable)
+    }
+
     override fun loadGithubUsers(query: String, page: Int) {
         val githubService = GithubService.create()
-        disposable.add(githubService.usersSearch(query, page)
+        compDisposable.add(githubService.usersSearch(query, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
@@ -32,7 +50,6 @@ class SearchPresenter(private val searchView: SearchFragment): MainContract.Sear
             }, { error ->
                 searchView.showLoadingGithubUsersError(error)
             }))
-
     }
 
     private fun getArrayListFromClass(users: List<GithubUser>): ArrayList<GithubUser> {
@@ -52,6 +69,6 @@ class SearchPresenter(private val searchView: SearchFragment): MainContract.Sear
     //in case of memory leaks
     //TODO: associated with lifecycle, should redone
     override fun disposeDisposables() {
-        disposable.dispose()
+        compDisposable.dispose()
     }
 }

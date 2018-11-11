@@ -9,9 +9,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.*
 import com.squareup.picasso.Picasso
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.you11.tochkatestproject.MainApp
 import ru.you11.tochkatestproject.R
 import ru.you11.tochkatestproject.model.GithubUser
+import java.util.concurrent.TimeUnit
 
 class SearchFragment: Fragment(), MainContract.SearchContract.View {
 
@@ -33,7 +36,6 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
         with(root) {
             screenEmptyMessage = findViewById(R.id.search_screen_empty_message)
             recyclerView = findViewById(R.id.search_results_recycler_view)
-
             pagesButtonsLayout = findViewById(R.id.search_results_pages_buttons_layout)
             setupRecyclerView()
         }
@@ -75,6 +77,7 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
                     latestQuery = newText
+                    presenter.loadWithDelay(newText)
                 }
                 return true
             }

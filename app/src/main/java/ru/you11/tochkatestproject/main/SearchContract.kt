@@ -33,6 +33,8 @@ interface MainContract {
 
         interface Presenter: BasePresenter {
 
+            fun loadWithDelay(query: String)
+
             fun loadGithubUsers(query: String, page: Int)
 
             fun disposeDisposables()
