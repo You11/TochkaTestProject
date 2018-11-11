@@ -1,14 +1,18 @@
 package ru.you11.tochkatestproject.main
 
+import android.app.Application
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.SearchView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
+import ru.you11.tochkatestproject.MainApp
 import ru.you11.tochkatestproject.R
 import ru.you11.tochkatestproject.model.GithubUser
 
@@ -110,7 +114,10 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
 class SearchRecyclerViewAdapter(private val results: ArrayList<GithubUser>): RecyclerView.Adapter<SearchRecyclerViewAdapter.ViewHolder>() {
 
     class ViewHolder(val layout: RelativeLayout): RecyclerView.ViewHolder(layout) {
-        val name = layout.findViewById<TextView>(R.id.search_rw_text_view)
+        val name = layout.findViewById<TextView>(R.id.search_rw_username)
+        val userId = layout.findViewById<TextView>(R.id.search_rw_user_id)
+        val score = layout.findViewById<TextView>(R.id.search_rw_user_score)
+        val avatar = layout.findViewById<ImageView>(R.id.search_rw_user_avatar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -122,7 +129,15 @@ class SearchRecyclerViewAdapter(private val results: ArrayList<GithubUser>): Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = results[position]
-        holder.name.text = user.login
+        val resources = MainApp.applicationContext().resources
+        holder.name.text = resources.getString(R.string.search_rw_username, user.login)
+        holder.userId.text = resources.getString(R.string.search_rw_user_id, user.id)
+        holder.score.text = resources.getString(R.string.search_rw_user_score, user.score)
+        Picasso.get()
+            .load(user.avatarUrl)
+            .resize(200, 200)
+            .centerCrop()
+            .into(holder.avatar)
     }
 
     override fun getItemCount(): Int {

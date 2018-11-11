@@ -11,4 +11,8 @@
     <string name="nav_drawer_about_me_title">About me</string>
     <string name="menu_search_action">Search</string>
     <string name="menu_search_hint">Github username</string>
+    <string name="search_rw_avatar_content_description">User avatar</string>
+    <string name="search_rw_username">Username: %1$s</string>
+    <string name="search_rw_user_id">Id: %1$d</string>
+    <string name="search_rw_user_score">Score: %1$f</string>
 </resources>

@@ -1,11 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_rw_user_avatar"
+            android:contentDescription="@string/search_rw_avatar_content_description"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            android:paddingLeft="0dp"
+            android:paddingStart="0dp"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/search_rw_text_view"/>
+            android:id="@+id/search_rw_username"
+            android:layout_toRightOf="@id/search_rw_user_avatar"
+            android:layout_toEndOf="@id/search_rw_user_avatar"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_rw_username"
+            android:id="@+id/search_rw_user_id"
+            android:layout_toRightOf="@id/search_rw_user_avatar"
+            android:layout_toEndOf="@id/search_rw_user_avatar"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_rw_user_id"
+            android:id="@+id/search_rw_user_score"
+            android:layout_toRightOf="@id/search_rw_user_avatar"
+            android:layout_toEndOf="@id/search_rw_user_avatar"/>
 
 </RelativeLayout>
