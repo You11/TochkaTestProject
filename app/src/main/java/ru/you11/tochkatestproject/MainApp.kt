@@ -2,6 +2,7 @@ package ru.you11.tochkatestproject
 
 import android.app.Application
 import android.content.Context
+import com.vk.sdk.VKSdk
 
 class MainApp: Application() {
 
@@ -15,6 +16,11 @@ class MainApp: Application() {
         fun applicationContext() : Context {
             return instance!!.applicationContext
         }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        VKSdk.initialize(applicationContext)
     }
 
 }

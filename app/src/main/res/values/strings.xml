@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TochkaTestProject</string>
+    <integer name="com_vk_sdk_AppId">6748320</integer>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -20,4 +22,9 @@
     <string name="search_results_pages_previous_button_text">&lt;</string>
     <string name="search_results_pages_next_button_text">&gt;</string>
     <string name="search_results_pages_last_button_text">&gt;&gt;</string>
+
+    <string name="login_login_with">Login with</string>
+    <string name="login_vkontakte_button_text">VKontakte</string>
+    <string name="login_google_button_text">Google</string>
+    <string name="login_facebook_button_text">Facebook</string>
 </resources>
