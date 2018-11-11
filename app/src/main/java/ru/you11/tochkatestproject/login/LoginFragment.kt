@@ -2,7 +2,6 @@ package ru.you11.tochkatestproject.login
 
 import android.app.Fragment
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +13,6 @@ import com.vk.sdk.VKCallback
 import com.vk.sdk.VKSdk
 import com.vk.sdk.api.VKError
 import ru.you11.tochkatestproject.R
-import ru.you11.tochkatestproject.main.MainActivity
-import ru.you11.tochkatestproject.main.MainContract
 
 
 class LoginFragment: Fragment(), LoginContract.View {
@@ -61,13 +58,13 @@ class LoginFragment: Fragment(), LoginContract.View {
             }
 
             override fun onError(error: VKError?) {
-                if (error != null) showVKErrorMessage(error)
+                if (error != null) showVKErrorMessage(error.errorMessage)
             }
         }))
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    fun showVKErrorMessage(error: VKError) {
-        Toast.makeText(activity, error.errorMessage, Toast.LENGTH_SHORT).show()
+    fun showVKErrorMessage(errorMessage: String) {
+        Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show()
     }
 }

@@ -7,11 +7,18 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import ru.you11.tochkatestproject.R
+import ru.you11.tochkatestproject.model.AppUser
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainContract.DrawerContract.View {
+
+    override lateinit var presenter: MainContract.DrawerContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +26,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         setupNavigationDrawer()
+        DrawerPresenter(this)
+        presenter.start()
         setupInitialFragment()
     }
 
@@ -96,5 +105,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    override fun displayUserInfo(user: AppUser) {
+
+        findViewById<TextView>(R.id.nav_header_user_name).text = user.username
+
+        val image = findViewById<ImageView>(R.id.nav_header_user_avatar)
+        Picasso.get().load(user.photoUrl).into(image)
+    }
+
+    override fun displayVKUserInfoErrorMessage(errorMessage: String) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 }

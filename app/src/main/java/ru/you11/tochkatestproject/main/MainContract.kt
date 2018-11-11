@@ -1,7 +1,9 @@
 package ru.you11.tochkatestproject.main
 
+import com.vk.sdk.api.VKError
 import ru.you11.tochkatestproject.BasePresenter
 import ru.you11.tochkatestproject.BaseView
+import ru.you11.tochkatestproject.model.AppUser
 import ru.you11.tochkatestproject.model.GithubUser
 
 interface MainContract {
@@ -45,12 +47,14 @@ interface MainContract {
 
         interface View: BaseView<Presenter> {
 
-            fun displayUsername()
+            fun displayUserInfo(user: AppUser)
 
-            fun displayPhoto()
+            fun displayVKUserInfoErrorMessage(errorMessage: String)
         }
 
         interface Presenter: BasePresenter {
+
+            fun getUserInfo()
 
             fun logOffUser()
         }
