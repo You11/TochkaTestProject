@@ -20,13 +20,11 @@ interface MainContract {
 
         interface View: BaseView<Presenter> {
 
-            fun setupSearchBar()
-
             fun setLoadingIndicator(active: Boolean)
 
             fun showNoGithubUsersScreen()
 
-            fun showGithubUsers(repositories: List<GithubUser>)
+            fun showGithubUsers(users: ArrayList<GithubUser>)
 
             fun showLoadingGithubUsersError()
 
@@ -36,6 +34,8 @@ interface MainContract {
         interface Presenter: BasePresenter {
 
             fun loadGithubUsers(query: String, page: Int)
+
+            fun disposeDisposables()
         }
     }
 

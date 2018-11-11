@@ -7,11 +7,10 @@ class GithubUser(
     val login: String,
     @SerializedName("avatar_url")
     val avatarUrl: String,
-    val score: Double) {
+    val score: Double)
 
-}
 
 class GithubUserList(
     @SerializedName("items")
-    val users: List<GithubUser>
+    val users: ArrayList<GithubUser>
 )
