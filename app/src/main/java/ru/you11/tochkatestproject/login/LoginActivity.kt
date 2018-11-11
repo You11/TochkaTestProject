@@ -3,7 +3,6 @@ package ru.you11.tochkatestproject.login
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import ru.you11.tochkatestproject.R
-import ru.you11.tochkatestproject.main.SearchFragment
 
 class LoginActivity: AppCompatActivity() {
 
@@ -12,7 +11,7 @@ class LoginActivity: AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         val fragment = LoginFragment()
-        supportFragmentManager.beginTransaction()
+        fragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment, "LoginFragment")
             .commit()
         LoginPresenter(fragment)

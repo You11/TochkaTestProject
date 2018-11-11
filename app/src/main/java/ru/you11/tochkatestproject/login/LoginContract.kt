@@ -7,20 +7,20 @@ interface LoginContract {
 
     interface View: BaseView<Presenter> {
 
-        fun showGoogleAuthForm()
-
-        fun showFacebookAuthForm()
-
-        fun showVkAuthForm()
-
-        fun hideAuthForm()
-
-        fun showLoginButton()
     }
 
     interface Presenter: BasePresenter {
 
-        fun login()
+        fun loginWithVK()
 
+        fun loginWithGoogle()
+
+        fun loginWithFacebook()
+
+        fun startActivity()
+
+        fun saveUserInfo()
+
+        fun isUserLoggedIn(): Boolean
     }
 }
