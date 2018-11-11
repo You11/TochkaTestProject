@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <TextView
             android:layout_width="wrap_content"
@@ -15,10 +16,80 @@
             android:paddingLeft="20dp"
             android:paddingRight="30dp"/>
 
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="9"
+            android:visibility="gone"
+            android:id="@+id/search_results_pages_buttons_layout"
+            android:gravity="center_horizontal">
+
+        <Button android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/search_results_pages_earliest_button_text"
+                android:id="@+id/search_results_pages_button_earliest"/>
+
+        <Button android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/search_results_pages_previous_button_text"
+                android:id="@+id/search_results_pages_button_previous"/>
+
+        <Button android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:id="@+id/search_results_pages_button_number_1"/>
+
+        <Button android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:id="@+id/search_results_pages_button_number_2"/>
+
+        <Button android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:id="@+id/search_results_pages_button_number_3"/>
+
+        <Button android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:id="@+id/search_results_pages_button_number_4"/>
+
+        <Button android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:id="@+id/search_results_pages_button_number_5"/>
+
+        <Button android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/search_results_pages_next_button_text"
+                android:id="@+id/search_results_pages_button_next"/>
+
+        <Button android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/search_results_pages_last_button_text"
+                android:id="@+id/search_results_pages_button_last"/>
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/search_results_recycler_view"
+            android:layout_below="@id/search_results_pages_buttons_layout"
             android:visibility="gone"/>
 
-</LinearLayout>
+</RelativeLayout>

@@ -12,5 +12,7 @@ class GithubUser(
 
 class GithubUserList(
     @SerializedName("items")
-    val users: ArrayList<GithubUser>
+    val users: ArrayList<GithubUser>,
+    @SerializedName("total_count")
+    val usersCount: Long
 )

@@ -1,17 +1,14 @@
 package ru.you11.tochkatestproject.main
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.SearchView
-import android.widget.TextView
+import android.widget.*
 import com.squareup.picasso.Picasso
-import org.w3c.dom.Text
 import ru.you11.tochkatestproject.MainApp
 import ru.you11.tochkatestproject.R
 import ru.you11.tochkatestproject.model.GithubUser
@@ -23,8 +20,10 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
     private lateinit var searchBar: SearchView
     private lateinit var recyclerView: RecyclerView
     private lateinit var screenEmptyMessage: TextView
+    private lateinit var pagesButtonsLayout: LinearLayout
 
     private val results = ArrayList<GithubUser>()
+    private var latestQuery = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         retainInstance = true
@@ -34,6 +33,8 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
         with(root) {
             screenEmptyMessage = findViewById(R.id.search_screen_empty_message)
             recyclerView = findViewById(R.id.search_results_recycler_view)
+
+            pagesButtonsLayout = findViewById(R.id.search_results_pages_buttons_layout)
             setupRecyclerView()
         }
         return root
@@ -72,11 +73,15 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
     private fun createSearchQueryListener(searchView: SearchView): SearchView.OnQueryTextListener {
         return object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    latestQuery = newText
+                }
                 return true
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
+                    latestQuery = query
                     presenter.loadGithubUsers(query, 1)
                 }
                 searchView.clearFocus()
@@ -91,19 +96,142 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
 
     override fun showNoGithubUsersScreen() {
         recyclerView.visibility = RecyclerView.GONE
+        pagesButtonsLayout.visibility = LinearLayout.GONE
         screenEmptyMessage.visibility = TextView.VISIBLE
     }
 
-    override fun showGithubUsers(users: ArrayList<GithubUser>) {
+    override fun showGithubUsersPage(users: ArrayList<GithubUser>, page: Int, numberOfPages: Int) {
         results.clear()
         results.addAll(users)
+        changePages(page, numberOfPages)
         recyclerView.adapter.notifyDataSetChanged()
         screenEmptyMessage.visibility = TextView.GONE
         recyclerView.visibility = RecyclerView.VISIBLE
+        pagesButtonsLayout.visibility = LinearLayout.VISIBLE
     }
 
-    override fun showLoadingGithubUsersError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun changePages(page: Int, numberOfPages: Int) {
+        with(pagesButtonsLayout) {
+            var counter = 0
+            while (counter < pagesButtonsLayout.childCount) {
+                with(pagesButtonsLayout.getChildAt(counter) as Button) {
+                    isEnabled = true
+                    setTypeface(null, Typeface.NORMAL)
+                }
+                counter++
+            }
+
+            val earliestButton = findViewById<Button>(R.id.search_results_pages_button_earliest)
+            val previousButton = findViewById<Button>(R.id.search_results_pages_button_previous)
+            val firstNumberedButton = findViewById<Button>(R.id.search_results_pages_button_number_1)
+            val secondNumberedButton = findViewById<Button>(R.id.search_results_pages_button_number_2)
+            val thirdNumberedButton = findViewById<Button>(R.id.search_results_pages_button_number_3)
+            val fourthNumberedButton = findViewById<Button>(R.id.search_results_pages_button_number_4)
+            val fifthNumberedButton = findViewById<Button>(R.id.search_results_pages_button_number_5)
+            val nextButton = findViewById<Button>(R.id.search_results_pages_button_next)
+            val lastButton = findViewById<Button>(R.id.search_results_pages_button_last)
+
+            earliestButton.setOnClickListener {
+                presenter.loadGithubUsers(latestQuery, 1)
+            }
+
+            previousButton.setOnClickListener {
+                presenter.loadGithubUsers(latestQuery, page - 1)
+            }
+
+            nextButton.setOnClickListener {
+                presenter.loadGithubUsers(latestQuery, page + 1)
+            }
+
+            lastButton.setOnClickListener {
+                presenter.loadGithubUsers(latestQuery, numberOfPages)
+            }
+
+
+            val numberedButtonsArray = ArrayList<Button>()
+            numberedButtonsArray.add(firstNumberedButton)
+            numberedButtonsArray.add(secondNumberedButton)
+            numberedButtonsArray.add(thirdNumberedButton)
+            numberedButtonsArray.add(fourthNumberedButton)
+            numberedButtonsArray.add(fifthNumberedButton)
+
+            if (page == 1) {
+                earliestButton.isEnabled = false
+                previousButton.isEnabled = false
+
+                if (numberOfPages == 1) {
+                    nextButton.isEnabled = false
+                    lastButton.isEnabled = false
+                }
+            }
+
+            if (page == numberOfPages) {
+                nextButton.isEnabled = false
+                lastButton.isEnabled = false
+            }
+
+            setPageButtonsText(numberedButtonsArray, page, numberOfPages)
+            highlightCurrentPageButton(numberedButtonsArray, page, numberOfPages)
+            setOnClickListenersToPageButtons(numberedButtonsArray)
+            setNumberedButtonsVisibility(numberedButtonsArray, numberOfPages, numberedButtonsArray.count())
+        }
+    }
+
+    private fun setPageButtonsText(buttonsArray: ArrayList<Button>, page: Int, numberOfPages: Int) {
+        if (page == 1 || page == 2 || page == 3) {
+            buttonsArray.forEachIndexed { index, button ->
+                button.text = (index + 1).toString()
+            }
+        } else if (page == numberOfPages || page == numberOfPages - 1 || page == numberOfPages - 2) {
+            buttonsArray.forEachIndexed { index, button ->
+                button.text = (numberOfPages - 4 + index).toString()
+            }
+        } else {
+            buttonsArray.forEachIndexed { index, button ->
+                button.text = (page - 2 + index).toString()
+            }
+        }
+    }
+
+    private fun highlightCurrentPageButton(buttonsArray: ArrayList<Button>, page: Int, numberOfPages: Int) {
+
+        val button = if (page == 1 || page == 2) {
+            buttonsArray[page - 1]
+        } else if (page == numberOfPages || page == numberOfPages - 1) {
+            buttonsArray[4 + page - numberOfPages]
+        } else {
+            buttonsArray[2]
+        }
+
+        button.setTypeface(null, Typeface.BOLD)
+        button.isEnabled = false
+    }
+
+    //call after setting text
+    //TODO: potentially can crash because it relies on text
+    private fun setOnClickListenersToPageButtons(buttonsArray: ArrayList<Button>) {
+        buttonsArray.forEach { button ->
+            button.setOnClickListener {
+                presenter.loadGithubUsers(latestQuery, button.text.toString().toInt())
+            }
+        }
+    }
+
+    private fun setNumberedButtonsVisibility(buttonsArray: ArrayList<Button>, numberOfPages: Int, counter: Int) {
+        if (numberOfPages < counter) {
+            buttonsArray[counter - 1].visibility = Button.GONE
+            setNumberedButtonsVisibility(buttonsArray, numberOfPages, counter - 1)
+        } else {
+            buttonsArray.forEachIndexed { index, button ->
+                if (index < counter) {
+                    button.visibility = Button.VISIBLE
+                }
+            }
+        }
+    }
+
+    override fun showLoadingGithubUsersError(error: Throwable) {
+        Toast.makeText(activity, error.localizedMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun removeRepositoriesFromUI() {

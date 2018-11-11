@@ -26,21 +26,27 @@ class SearchPresenter(private val searchView: SearchFragment): MainContract.Sear
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
-                val userArrayList = getArrayListFromClass(result)
-                searchView.showGithubUsers(userArrayList)
+                val userArrayList = getArrayListFromClass(result.users)
+                val numberOfPages = getNumberOfPages(result.usersCount)
+                searchView.showGithubUsersPage(userArrayList, page, numberOfPages)
             }, { error ->
-                Log.d("retrofitTesting", error.localizedMessage)
+                searchView.showLoadingGithubUsersError(error)
             }))
 
     }
 
-    private fun getArrayListFromClass(result: GithubUserList): ArrayList<GithubUser> {
+    private fun getArrayListFromClass(users: List<GithubUser>): ArrayList<GithubUser> {
         val userArrayList = ArrayList<GithubUser>()
-        result.users.forEach {
+        users.forEach {
             userArrayList.add(it)
         }
 
         return userArrayList
+    }
+
+    private fun getNumberOfPages(numberOfUsers: Long): Int {
+        val numberOfPages: Double = numberOfUsers / 30.0
+        return Math.ceil(numberOfPages).toInt()
     }
 
     //in case of memory leaks

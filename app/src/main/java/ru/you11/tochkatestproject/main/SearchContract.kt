@@ -24,9 +24,9 @@ interface MainContract {
 
             fun showNoGithubUsersScreen()
 
-            fun showGithubUsers(users: ArrayList<GithubUser>)
+            fun showGithubUsersPage(users: ArrayList<GithubUser>, page: Int, numberOfPages: Int)
 
-            fun showLoadingGithubUsersError()
+            fun showLoadingGithubUsersError(error: Throwable)
 
             fun removeRepositoriesFromUI()
         }
