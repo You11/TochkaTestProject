@@ -11,7 +11,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="nav_drawer_users_title">Search users</string>
-    <string name="nav_drawer_about_me_title">About me</string>
+    <string name="nav_drawer_about_me_title">About</string>
     <string name="nav_drawer_change_profile_title">Log out</string>
     <string name="menu_search_action">Search</string>
     <string name="menu_search_hint">Github username</string>
@@ -30,4 +30,16 @@
     <string name="login_vkontakte_button_text">VKontakte</string>
     <string name="login_google_button_text">Google</string>
     <string name="login_facebook_button_text">Facebook</string>
+
+    <string name="about_fragment_text">Напишите приложение:\n
+        - авторизация через сервисы: Вк, Google, Facebook\n
+        - после авторизации, необходимо отобразить профиль пользователя в левом меню (фото + имя/логин)\n
+        - дать возможность сменить учетную запись\n
+        - на основном экране (после авторизации пользователя) реализовать поиск пользователей Github (через open API). Что отобразить по каждому пользователю - на Ваш выбор.\n
+        - список должен поддерживать пагинацию по 30 элементов на странице\n
+        - при вводе в строку поиска, сделать задержку отправки запросов в 600 миллисекунд\n
+        P.S. БЕЗ Mosby/Moxy\n
+        Стек технологий: Kotlin, RxJava, Retrofit, Picasso\n
+        Пожелания: по возможности, продемонстрируйте знания архитектуры приложений, использования паттернов проектирования информационных систем, написания тестов.\n
+    </string>
 </resources>

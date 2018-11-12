@@ -75,9 +75,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.nav_drawer_about_me -> {
-                fragment = AboutMeFragment()
-                AboutMePresenter(fragment)
-                fragmentTag = "AboutMeFragment"
+                fragment = AboutFragment()
+                AboutPresenter(fragment)
+                fragmentTag = "AboutFragment"
             }
 
             R.id.nav_drawer_change_profile -> {

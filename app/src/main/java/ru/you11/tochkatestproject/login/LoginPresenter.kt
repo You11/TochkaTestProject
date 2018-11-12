@@ -47,7 +47,7 @@ class LoginPresenter(private val loginFragment: LoginFragment): LoginContract.Pr
                 }
 
                 override fun onError(error: VKError?) {
-                    if (error != null) loginFragment.showVKErrorMessage(error.errorMessage)
+                    if (error?.errorMessage != null) loginFragment.showVKErrorMessage(error.errorMessage)
                 }
             }))
     }

@@ -8,7 +8,7 @@ import ru.you11.tochkatestproject.model.GithubUser
 
 interface MainContract {
 
-    interface AboutMeContract {
+    interface AboutContract {
 
         interface View: BaseView<Presenter> {
 
