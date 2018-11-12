@@ -18,22 +18,19 @@
                   android:id="@+id/login_buttons_layout">
 
         <Button android:layout_width="150dp"
-                android:layout_height="75dp"
+                android:layout_height="50dp"
                 android:id="@+id/login_vk_button"
                 android:text="@string/login_vkontakte_button_text"/>
 
         <com.google.android.gms.common.SignInButton
                 android:id="@+id/login_google_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="150dp"
+                android:layout_height="50dp" />
 
         <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_facebook_button"
                 android:layout_width="150dp"
-                android:layout_height="75dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp" />
+                android:layout_height="50dp" />
     </LinearLayout>
 
 </RelativeLayout>
