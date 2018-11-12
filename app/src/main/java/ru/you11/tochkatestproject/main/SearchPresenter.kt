@@ -61,6 +61,7 @@ class SearchPresenter(private val searchFragment: SearchFragment): MainContract.
             }))
     }
 
+    //TODO: Still will show error pre-install
     private fun updateAndroidSecurityProvider() {
         try {
             ProviderInstaller.installIfNeeded(searchFragment.activity)

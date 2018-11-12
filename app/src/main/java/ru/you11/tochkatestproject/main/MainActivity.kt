@@ -131,9 +131,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val image = header.findViewById<ImageView>(R.id.nav_header_user_avatar)
         if (user.photoUrl == null) {
-            Picasso.get().load(R.drawable.default_user_avatar).resize(200, 200).into(image)
+            Picasso.get().load(R.drawable.default_user_avatar).resize(150, 150).into(image)
         } else {
-            Picasso.get().load(user.photoUrl).resize(200, 200).into(image)
+            Picasso.get().load(user.photoUrl).resize(150, 150).into(image)
         }
 
     }
