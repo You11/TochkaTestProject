@@ -8,13 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import com.vk.sdk.VKAccessToken
-import com.vk.sdk.VKCallback
-import com.vk.sdk.VKSdk
-import com.vk.sdk.api.VKError
 import ru.you11.tochkatestproject.R
 import com.facebook.FacebookException
 import com.facebook.login.widget.LoginButton
+import com.google.android.gms.common.SignInButton
+import com.google.android.gms.common.api.ApiException
 
 
 class LoginFragment: Fragment(), LoginContract.View {
@@ -30,7 +28,7 @@ class LoginFragment: Fragment(), LoginContract.View {
         val root = inflater.inflate(R.layout.fragment_login, container, false)
         with(root) {
             val vkLoginButton = findViewById<Button>(R.id.login_vk_button)
-            val googleLoginButton = findViewById<Button>(R.id.login_google_button)
+            val googleLoginButton = findViewById<SignInButton>(R.id.login_google_button)
             val facebookLoginButton = findViewById<LoginButton>(R.id.login_facebook_button)
 
             vkLoginButton.setOnClickListener {
@@ -49,18 +47,22 @@ class LoginFragment: Fragment(), LoginContract.View {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (presenter.callbackWithVK(requestCode, resultCode, data)) return
-
-        presenter.callbackWithFacebook(requestCode, resultCode, data)
-
         super.onActivityResult(requestCode, resultCode, data)
+
+        if (presenter.callbackWithVK(requestCode, resultCode, data)) return
+        presenter.callbackWithFacebook(requestCode, resultCode, data)
+        presenter.callbackWithGoogle(requestCode, resultCode, data)
     }
 
-    fun showVKErrorMessage(errorMessage: String) {
+    override fun showVKErrorMessage(errorMessage: String) {
         Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
-    fun showFacebookErrorMessage(exception: FacebookException) {
-        Toast.makeText(activity, exception.localizedMessage, Toast.LENGTH_SHORT).show()
+    override fun showFacebookErrorMessage(errorMessage: String) {
+        Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showGoogleErrorMessage(errorMessage: String) {
+        Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show()
     }
 }

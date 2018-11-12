@@ -3,14 +3,16 @@ package ru.you11.tochkatestproject.model
 import com.facebook.AccessToken
 import com.facebook.FacebookSdk
 import com.facebook.Profile
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.vk.sdk.VKSdk
+import ru.you11.tochkatestproject.MainApp
 
 data class AppUser(val username: String,
-                   val photoUrl: String? = "https://www.brandeps.com/icon-download/U/User-02.svg") {
+                   val photoUrl: String? = "http://profilepicturesdp.com/wp-content/uploads/2018/06/default-user-profile-picture-7.png") {
 
     companion object {
         fun getAuthMethod(): AuthMethod? {
-            if (VKSdk.isLoggedIn()) {
+            if (isLoggedInVK()) {
                 return AuthMethod.VKontakte
             }
 
@@ -18,11 +20,15 @@ data class AppUser(val username: String,
                 return AuthMethod.Facebook
             }
 
+            if (isLoggedInGoogle()) {
+                return AuthMethod.Google
+            }
+
             return null
         }
 
         fun isLoggedIn(): Boolean {
-            if (VKSdk.isLoggedIn()) {
+            if (isLoggedInVK()) {
                 return true
             }
 
@@ -30,11 +36,23 @@ data class AppUser(val username: String,
                 return true
             }
 
+            if (isLoggedInGoogle()) {
+                return true
+            }
+
             return false
+        }
+
+        private fun isLoggedInVK(): Boolean {
+            return VKSdk.isLoggedIn()
         }
 
         private fun isLoggedInFacebook(): Boolean {
             return (AccessToken.getCurrentAccessToken() != null)
+        }
+
+        private fun isLoggedInGoogle(): Boolean {
+            return (GoogleSignIn.getLastSignedInAccount(MainApp.applicationContext()) != null)
         }
     }
 }

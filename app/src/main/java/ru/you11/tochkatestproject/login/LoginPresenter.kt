@@ -10,8 +10,12 @@ import com.vk.sdk.VKSdk
 import com.vk.sdk.api.VKError
 import ru.you11.tochkatestproject.main.MainActivity
 import ru.you11.tochkatestproject.model.AppUser
-import com.facebook.appevents.internal.ActivityLifecycleTracker.startTracking
-import com.facebook.Profile.setCurrentProfile
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 
 
 class LoginPresenter(private val loginFragment: LoginFragment): LoginContract.Presenter {
@@ -21,11 +25,14 @@ class LoginPresenter(private val loginFragment: LoginFragment): LoginContract.Pr
     }
 
     private lateinit var callbackManager: CallbackManager
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private val GOOGLE_SIGN_IN = 100
 
     override fun start() {
         if (isUserLoggedIn()) {
             startActivity()
         }
+        setupGoogleSignInClient()
     }
 
     override fun loginWithVK() {
@@ -45,7 +52,33 @@ class LoginPresenter(private val loginFragment: LoginFragment): LoginContract.Pr
             }))
     }
 
+    private fun setupGoogleSignInClient() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestProfile()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(loginFragment.activity, gso)
+    }
+
     override fun loginWithGoogle() {
+        val intent = googleSignInClient.signInIntent
+        loginFragment.startActivityForResult(intent, GOOGLE_SIGN_IN)
+    }
+
+    override fun callbackWithGoogle(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode != GOOGLE_SIGN_IN) return
+
+        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+        handleSignInResult(task)
+    }
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            //isn't used, but needed to catch potential error
+            val account = completedTask.getResult(ApiException::class.java)
+            startActivity()
+        } catch (exception: ApiException) {
+            loginFragment.showGoogleErrorMessage(exception.localizedMessage)
+        }
 
     }
 
@@ -63,7 +96,7 @@ class LoginPresenter(private val loginFragment: LoginFragment): LoginContract.Pr
                 }
 
                 override fun onError(exception: FacebookException) {
-                    loginFragment.showFacebookErrorMessage(exception)
+                    loginFragment.showFacebookErrorMessage(exception.localizedMessage)
                 }
             })
     }

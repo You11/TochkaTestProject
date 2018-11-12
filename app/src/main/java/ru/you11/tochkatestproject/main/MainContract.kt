@@ -43,7 +43,7 @@ interface MainContract {
         }
     }
 
-    interface DrawerContract {
+    interface MainActivityContract {
 
         interface View: BaseView<Presenter> {
 
@@ -53,6 +53,8 @@ interface MainContract {
         }
 
         interface Presenter: BasePresenter {
+
+            fun setupGoogleApiClient()
 
             fun getUserInfo()
 

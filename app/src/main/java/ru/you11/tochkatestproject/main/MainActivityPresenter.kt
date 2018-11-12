@@ -4,17 +4,24 @@ import android.content.Intent
 import com.facebook.Profile
 import com.facebook.ProfileTracker
 import com.facebook.login.LoginManager
+import com.google.android.gms.auth.api.Auth
 import com.vk.sdk.VKSdk
 import com.vk.sdk.api.*
 import ru.you11.tochkatestproject.login.LoginActivity
 import ru.you11.tochkatestproject.model.AppUser
 import ru.you11.tochkatestproject.model.AuthMethod
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
 
-class MainActivityPresenter(private val activity: MainActivity): MainContract.DrawerContract.Presenter {
+
+class MainActivityPresenter(private val activity: MainActivity): MainContract.MainActivityContract.Presenter {
 
     init {
         activity.presenter = this
     }
+
+    private lateinit var googleApiClient: GoogleApiClient
 
     override fun start() {
         getUserInfo()
@@ -52,7 +59,17 @@ class MainActivityPresenter(private val activity: MainActivity): MainContract.Dr
             }
 
             AuthMethod.Google -> {
+                val account = GoogleSignIn.getLastSignedInAccount(activity)
+                if (account != null) {
+                    val personName = account.displayName ?: (account.givenName + " " + account.familyName)
+                    val personPhoto = account.photoUrl
 
+                    if (personPhoto == null) {
+                        activity.displayUserInfo(AppUser(personName))
+                    } else {
+                        activity.displayUserInfo(AppUser(personName, personPhoto.toString()))
+                    }
+                }
             }
 
             AuthMethod.Facebook -> {
@@ -77,6 +94,16 @@ class MainActivityPresenter(private val activity: MainActivity): MainContract.Dr
         }
     }
 
+    override fun setupGoogleApiClient() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+        googleApiClient = GoogleApiClient.Builder(activity)
+            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+            .build()
+        googleApiClient.connect()
+    }
+
     //TODO: rename
     private fun getFBInfoFromProfile(profile: Profile) {
         val firstName = profile.firstName
@@ -89,21 +116,28 @@ class MainActivityPresenter(private val activity: MainActivity): MainContract.Dr
         when (AppUser.getAuthMethod()) {
             AuthMethod.VKontakte -> {
                 VKSdk.logout()
+                finishAndStartLoginActivity()
             }
 
             AuthMethod.Google -> {
+                Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback {
+                    finishAndStartLoginActivity()
+                }
 
             }
 
             AuthMethod.Facebook -> {
                 LoginManager.getInstance().logOut()
+                finishAndStartLoginActivity()
             }
 
             else -> {
 
             }
         }
+    }
 
+    private fun finishAndStartLoginActivity() {
         activity.startActivity(Intent(activity, LoginActivity::class.java))
         activity.finish()
     }

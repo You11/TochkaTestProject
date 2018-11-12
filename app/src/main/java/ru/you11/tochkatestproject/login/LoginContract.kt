@@ -7,7 +7,11 @@ import ru.you11.tochkatestproject.BaseView
 interface LoginContract {
 
     interface View: BaseView<Presenter> {
+        fun showVKErrorMessage(errorMessage: String)
 
+        fun showFacebookErrorMessage(errorMessage: String)
+
+        fun showGoogleErrorMessage(errorMessage: String)
     }
 
     interface Presenter: BasePresenter {
@@ -21,6 +25,8 @@ interface LoginContract {
         fun callbackWithVK(requestCode: Int, resultCode: Int, data: Intent?): Boolean
 
         fun callbackWithFacebook(requestCode: Int, resultCode: Int, data: Intent?)
+
+        fun callbackWithGoogle(requestCode: Int, resultCode: Int, data: Intent?)
 
         fun startActivity()
 

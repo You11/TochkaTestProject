@@ -22,10 +22,10 @@
                 android:id="@+id/login_vk_button"
                 android:text="@string/login_vkontakte_button_text"/>
 
-        <Button android:layout_width="150dp"
-                android:layout_height="75dp"
+        <com.google.android.gms.common.SignInButton
                 android:id="@+id/login_google_button"
-                android:text="@string/login_google_button_text"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_facebook_button"

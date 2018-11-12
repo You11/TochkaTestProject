@@ -16,9 +16,9 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import ru.you11.tochkatestproject.R
 import ru.you11.tochkatestproject.model.AppUser
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainContract.DrawerContract.View {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainContract.MainActivityContract.View {
 
-    override lateinit var presenter: MainContract.DrawerContract.Presenter
+    override lateinit var presenter: MainContract.MainActivityContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +34,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onResume()
         //crashes in onCreate because view not initialized by that time
         presenter.start()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.setupGoogleApiClient()
     }
 
     private fun setupInitialFragment() {
@@ -118,10 +123,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun displayUserInfo(user: AppUser) {
+        //because NullPointerException
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val header = navigationView.getHeaderView(0)
 
-        findViewById<TextView>(R.id.nav_header_user_name).text = user.username
+        header.findViewById<TextView>(R.id.nav_header_user_name).text = user.username
 
-        val image = findViewById<ImageView>(R.id.nav_header_user_avatar)
+        val image = header.findViewById<ImageView>(R.id.nav_header_user_avatar)
         Picasso.get().load(user.photoUrl).resize(200, 200).into(image)
     }
 
