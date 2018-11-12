@@ -1,5 +1,6 @@
 package ru.you11.tochkatestproject.login
 
+import android.content.Intent
 import ru.you11.tochkatestproject.BasePresenter
 import ru.you11.tochkatestproject.BaseView
 
@@ -15,7 +16,9 @@ interface LoginContract {
 
         fun loginWithGoogle()
 
-        fun loginWithFacebook()
+        fun setupLoginWithFacebook()
+
+        fun callbackWithFacebook(requestCode: Int, resultCode: Int, data: Intent?)
 
         fun startActivity()
 

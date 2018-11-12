@@ -1,5 +1,8 @@
 package ru.you11.tochkatestproject.model
 
+import com.facebook.AccessToken
+import com.facebook.FacebookSdk
+import com.facebook.Profile
 import com.vk.sdk.VKSdk
 
 data class AppUser(val username: String,
@@ -11,6 +14,10 @@ data class AppUser(val username: String,
                 return AuthMethod.VKontakte
             }
 
+            if (isLoggedInFacebook()) {
+                return AuthMethod.Facebook
+            }
+
             return null
         }
 
@@ -19,7 +26,15 @@ data class AppUser(val username: String,
                 return true
             }
 
+            if (isLoggedInFacebook()) {
+                return true
+            }
+
             return false
+        }
+
+        private fun isLoggedInFacebook(): Boolean {
+            return (Profile.getCurrentProfile() != null && AccessToken.getCurrentAccessToken() != null)
         }
     }
 }

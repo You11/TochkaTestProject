@@ -13,16 +13,13 @@ import com.vk.sdk.VKCallback
 import com.vk.sdk.VKSdk
 import com.vk.sdk.api.VKError
 import ru.you11.tochkatestproject.R
-import ru.you11.tochkatestproject.model.AppUser
+import com.facebook.FacebookException
+import com.facebook.login.widget.LoginButton
 
 
 class LoginFragment: Fragment(), LoginContract.View {
 
     override lateinit var presenter: LoginContract.Presenter
-
-    private lateinit var vkLoginButton: Button
-    private lateinit var googleLoginButton: Button
-    private lateinit var facebookLoginButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +29,9 @@ class LoginFragment: Fragment(), LoginContract.View {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_login, container, false)
         with(root) {
-            vkLoginButton = findViewById(R.id.login_vk_button)
-            googleLoginButton = findViewById(R.id.login_google_button)
-            facebookLoginButton = findViewById(R.id.login_facebook_button)
+            val vkLoginButton = findViewById<Button>(R.id.login_vk_button)
+            val googleLoginButton = findViewById<Button>(R.id.login_google_button)
+            val facebookLoginButton = findViewById<LoginButton>(R.id.login_facebook_button)
 
             vkLoginButton.setOnClickListener {
                 presenter.loginWithVK()
@@ -44,9 +41,8 @@ class LoginFragment: Fragment(), LoginContract.View {
                 presenter.loginWithGoogle()
             }
 
-            facebookLoginButton.setOnClickListener {
-                presenter.loginWithFacebook()
-            }
+            facebookLoginButton.setFragment(this@LoginFragment)
+            presenter.setupLoginWithFacebook()
         }
 
         return root
@@ -62,10 +58,17 @@ class LoginFragment: Fragment(), LoginContract.View {
                 if (error != null) showVKErrorMessage(error.errorMessage)
             }
         }))
+
+        presenter.callbackWithFacebook(requestCode, resultCode, data)
+
         super.onActivityResult(requestCode, resultCode, data)
     }
 
     fun showVKErrorMessage(errorMessage: String) {
         Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    fun showFacebookErrorMessage(exception: FacebookException) {
+        Toast.makeText(activity, exception.localizedMessage, Toast.LENGTH_SHORT).show()
     }
 }
