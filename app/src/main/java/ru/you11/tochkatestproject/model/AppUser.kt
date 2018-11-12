@@ -8,7 +8,7 @@ import com.vk.sdk.VKSdk
 import ru.you11.tochkatestproject.MainApp
 
 data class AppUser(val username: String,
-                   val photoUrl: String? = "http://profilepicturesdp.com/wp-content/uploads/2018/06/default-user-profile-picture-7.png") {
+                   val photoUrl: String? = null) {
 
     companion object {
         fun getAuthMethod(): AuthMethod? {

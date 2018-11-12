@@ -130,7 +130,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         header.findViewById<TextView>(R.id.nav_header_user_name).text = user.username
 
         val image = header.findViewById<ImageView>(R.id.nav_header_user_avatar)
-        Picasso.get().load(user.photoUrl).resize(200, 200).into(image)
+        if (user.photoUrl == null) {
+            Picasso.get().load(R.drawable.default_user_avatar).resize(200, 200).into(image)
+        } else {
+            Picasso.get().load(user.photoUrl).resize(200, 200).into(image)
+        }
+
     }
 
     override fun displayVKUserInfoErrorMessage(errorMessage: String) {
