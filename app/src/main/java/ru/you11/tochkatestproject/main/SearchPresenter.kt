@@ -23,7 +23,7 @@ class SearchPresenter(private val searchView: SearchFragment): MainContract.Sear
     private lateinit var onInputDisposable: Disposable
 
     override fun start() {
-        searchView.showNoGithubUsersScreen()
+        searchView.showStartingScreen()
     }
 
     override fun loadWithDelay(query: String) {
@@ -46,7 +46,11 @@ class SearchPresenter(private val searchView: SearchFragment): MainContract.Sear
             .subscribe({ result ->
                 val userArrayList = getArrayListFromClass(result.users)
                 val numberOfPages = getNumberOfPages(result.usersCount)
-                searchView.showGithubUsersPage(userArrayList, page, numberOfPages)
+                if (numberOfPages == 0) {
+                    searchView.showNoGithubUsersFoundScreen()
+                } else {
+                    searchView.showGithubUsersPage(userArrayList, page, numberOfPages)
+                }
             }, { error ->
                 searchView.showLoadingGithubUsersError(error)
             }))

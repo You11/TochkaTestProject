@@ -23,6 +23,7 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
     private lateinit var searchBar: SearchView
     private lateinit var recyclerView: RecyclerView
     private lateinit var screenEmptyMessage: TextView
+    private lateinit var screenUsersNotFoundMessage: TextView
     private lateinit var pagesButtonsLayout: LinearLayout
 
     private val results = ArrayList<GithubUser>()
@@ -37,6 +38,7 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
             screenEmptyMessage = findViewById(R.id.search_screen_empty_message)
             recyclerView = findViewById(R.id.search_results_recycler_view)
             pagesButtonsLayout = findViewById(R.id.search_results_pages_buttons_layout)
+            screenUsersNotFoundMessage = findViewById(R.id.search_screen_no_users_found)
             setupRecyclerView()
         }
         return root
@@ -97,10 +99,11 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun showNoGithubUsersScreen() {
+    override fun showStartingScreen() {
         recyclerView.visibility = RecyclerView.GONE
         pagesButtonsLayout.visibility = LinearLayout.GONE
         screenEmptyMessage.visibility = TextView.VISIBLE
+        screenUsersNotFoundMessage.visibility = TextView.GONE
     }
 
     override fun showGithubUsersPage(users: ArrayList<GithubUser>, page: Int, numberOfPages: Int) {
@@ -109,6 +112,7 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
         changePages(page, numberOfPages)
         recyclerView.adapter.notifyDataSetChanged()
         screenEmptyMessage.visibility = TextView.GONE
+        screenUsersNotFoundMessage.visibility = TextView.GONE
         recyclerView.visibility = RecyclerView.VISIBLE
         pagesButtonsLayout.visibility = LinearLayout.VISIBLE
     }
@@ -231,6 +235,13 @@ class SearchFragment: Fragment(), MainContract.SearchContract.View {
                 }
             }
         }
+    }
+
+    override fun showNoGithubUsersFoundScreen() {
+        recyclerView.visibility = RecyclerView.GONE
+        pagesButtonsLayout.visibility = LinearLayout.GONE
+        screenEmptyMessage.visibility = TextView.GONE
+        screenUsersNotFoundMessage.visibility = TextView.VISIBLE
     }
 
     override fun showLoadingGithubUsersError(error: Throwable) {

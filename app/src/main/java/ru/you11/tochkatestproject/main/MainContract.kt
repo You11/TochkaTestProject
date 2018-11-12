@@ -24,7 +24,9 @@ interface MainContract {
 
             fun setLoadingIndicator(active: Boolean)
 
-            fun showNoGithubUsersScreen()
+            fun showStartingScreen()
+
+            fun showNoGithubUsersFoundScreen()
 
             fun showGithubUsersPage(users: ArrayList<GithubUser>, page: Int, numberOfPages: Int)
 

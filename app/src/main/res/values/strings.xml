@@ -20,6 +20,7 @@
     <string name="search_rw_user_id">Id: %1$d</string>
     <string name="search_rw_user_score">Score: %1$f</string>
     <string name="search_screen_empty_message">Please input text in search bar above to find Github users.</string>
+    <string name="search_screen_no_users_found_message">No users found!</string>
     <string name="search_results_pages_earliest_button_text">&lt;&lt;</string>
     <string name="search_results_pages_previous_button_text">&lt;</string>
     <string name="search_results_pages_next_button_text">&gt;</string>
