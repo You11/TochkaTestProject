@@ -18,6 +18,8 @@ interface LoginContract {
 
         fun setupLoginWithFacebook()
 
+        fun callbackWithVK(requestCode: Int, resultCode: Int, data: Intent?): Boolean
+
         fun callbackWithFacebook(requestCode: Int, resultCode: Int, data: Intent?)
 
         fun startActivity()

@@ -6,7 +6,10 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.vk.sdk.VKAccessToken
+import com.vk.sdk.VKCallback
 import com.vk.sdk.VKSdk
+import com.vk.sdk.api.VKError
 import ru.you11.tochkatestproject.main.MainActivity
 import ru.you11.tochkatestproject.model.AppUser
 
@@ -26,6 +29,19 @@ class LoginPresenter(private val loginFragment: LoginFragment): LoginContract.Pr
 
     override fun loginWithVK() {
         VKSdk.login(loginFragment)
+    }
+
+    //i don't know why exactly this needs to return boolean but it's their docs so ok
+    override fun callbackWithVK(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        return (VKSdk.onActivityResult(requestCode, resultCode, data, object : VKCallback<VKAccessToken> {
+                override fun onResult(res: VKAccessToken?) {
+                    startActivity()
+                }
+
+                override fun onError(error: VKError?) {
+                    if (error != null) loginFragment.showVKErrorMessage(error.errorMessage)
+                }
+            }))
     }
 
     override fun loginWithGoogle() {

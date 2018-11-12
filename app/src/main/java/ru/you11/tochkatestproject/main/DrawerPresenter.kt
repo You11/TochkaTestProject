@@ -2,6 +2,7 @@ package ru.you11.tochkatestproject.main
 
 import android.content.Intent
 import android.support.v4.content.ContextCompat.startActivity
+import com.facebook.login.LoginManager
 import com.vk.sdk.VKSdk
 import com.vk.sdk.api.*
 import com.vk.sdk.api.model.VKApiUser
@@ -62,7 +63,7 @@ class DrawerPresenter(private val activity: MainActivity): MainContract.DrawerCo
             }
 
             AuthMethod.Facebook -> {
-
+                LoginManager.getInstance().logOut()
             }
 
             else -> {

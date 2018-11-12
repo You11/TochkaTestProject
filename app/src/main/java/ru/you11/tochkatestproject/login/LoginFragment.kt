@@ -49,15 +49,7 @@ class LoginFragment: Fragment(), LoginContract.View {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (!VKSdk.onActivityResult(requestCode, resultCode, data, object : VKCallback<VKAccessToken> {
-            override fun onResult(res: VKAccessToken?) {
-                presenter.startActivity()
-            }
-
-            override fun onError(error: VKError?) {
-                if (error != null) showVKErrorMessage(error.errorMessage)
-            }
-        }))
+        if (presenter.callbackWithVK(requestCode, resultCode, data)) return
 
         presenter.callbackWithFacebook(requestCode, resultCode, data)
 

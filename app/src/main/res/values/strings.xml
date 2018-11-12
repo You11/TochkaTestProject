@@ -12,7 +12,7 @@
 
     <string name="nav_drawer_users_title">Search users</string>
     <string name="nav_drawer_about_me_title">About me</string>
-    <string name="nav_drawer_change_profile_title">Change profile</string>
+    <string name="nav_drawer_change_profile_title">Log out</string>
     <string name="menu_search_action">Search</string>
     <string name="menu_search_hint">Github username</string>
     <string name="search_rw_avatar_content_description">User avatar</string>

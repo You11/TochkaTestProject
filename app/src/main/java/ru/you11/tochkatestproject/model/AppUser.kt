@@ -34,7 +34,7 @@ data class AppUser(val username: String,
         }
 
         private fun isLoggedInFacebook(): Boolean {
-            return (Profile.getCurrentProfile() != null && AccessToken.getCurrentAccessToken() != null)
+            return (AccessToken.getCurrentAccessToken() != null)
         }
     }
 }
