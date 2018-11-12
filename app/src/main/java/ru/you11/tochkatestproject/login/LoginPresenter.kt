@@ -1,9 +1,7 @@
 package ru.you11.tochkatestproject.login
 
 import android.content.Intent
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.vk.sdk.VKAccessToken
@@ -12,6 +10,9 @@ import com.vk.sdk.VKSdk
 import com.vk.sdk.api.VKError
 import ru.you11.tochkatestproject.main.MainActivity
 import ru.you11.tochkatestproject.model.AppUser
+import com.facebook.appevents.internal.ActivityLifecycleTracker.startTracking
+import com.facebook.Profile.setCurrentProfile
+
 
 class LoginPresenter(private val loginFragment: LoginFragment): LoginContract.Presenter {
 

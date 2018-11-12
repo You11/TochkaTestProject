@@ -1,17 +1,16 @@
 package ru.you11.tochkatestproject.main
 
 import android.content.Intent
-import android.support.v4.content.ContextCompat.startActivity
+import com.facebook.Profile
+import com.facebook.ProfileTracker
 import com.facebook.login.LoginManager
 import com.vk.sdk.VKSdk
 import com.vk.sdk.api.*
-import com.vk.sdk.api.model.VKApiUser
-import com.vk.sdk.api.model.VKList
 import ru.you11.tochkatestproject.login.LoginActivity
 import ru.you11.tochkatestproject.model.AppUser
 import ru.you11.tochkatestproject.model.AuthMethod
 
-class DrawerPresenter(private val activity: MainActivity): MainContract.DrawerContract.Presenter {
+class MainActivityPresenter(private val activity: MainActivity): MainContract.DrawerContract.Presenter {
 
     init {
         activity.presenter = this
@@ -22,8 +21,10 @@ class DrawerPresenter(private val activity: MainActivity): MainContract.DrawerCo
     }
 
     override fun getUserInfo() {
-        if (AppUser.isLoggedIn()) {
-            if (AppUser.getAuthMethod() == AuthMethod.VKontakte) {
+        if (!AppUser.isLoggedIn()) return
+
+        when (AppUser.getAuthMethod()) {
+            AuthMethod.VKontakte -> {
                 val params = VKParameters()
                 params[VKApiConst.FIELDS] = "photo_200"
                 val vkRequest = VKRequest("users.get", params)
@@ -49,7 +50,39 @@ class DrawerPresenter(private val activity: MainActivity): MainContract.DrawerCo
                     }
                 })
             }
+
+            AuthMethod.Google -> {
+
+            }
+
+            AuthMethod.Facebook -> {
+                if (Profile.getCurrentProfile() == null) {
+                    val profileTracker = object : ProfileTracker() {
+                        override fun onCurrentProfileChanged(oldProfile: Profile?, currentProfile: Profile) {
+                            this.stopTracking()
+                            Profile.setCurrentProfile(currentProfile)
+                            getFBInfoFromProfile(currentProfile)
+                        }
+                    }
+
+                    profileTracker.startTracking()
+                } else {
+                    getFBInfoFromProfile(Profile.getCurrentProfile())
+                }
+            }
+
+            else -> {
+
+            }
         }
+    }
+
+    //TODO: rename
+    private fun getFBInfoFromProfile(profile: Profile) {
+        val firstName = profile.firstName
+        val lastName = profile.lastName
+        val photoUrl = profile.getProfilePictureUri(200, 200)
+        activity.displayUserInfo(AppUser("$firstName $lastName", photoUrl.toString()))
     }
 
     override fun logOffUser() {

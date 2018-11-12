@@ -1,6 +1,5 @@
 package ru.you11.tochkatestproject.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -15,9 +14,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import ru.you11.tochkatestproject.R
-import ru.you11.tochkatestproject.login.LoginActivity
 import ru.you11.tochkatestproject.model.AppUser
-import ru.you11.tochkatestproject.model.AuthMethod
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainContract.DrawerContract.View {
 
@@ -30,7 +27,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setupNavigationDrawer()
         setupInitialFragment()
-        DrawerPresenter(this)
+        MainActivityPresenter(this)
     }
 
     override fun onResume() {
